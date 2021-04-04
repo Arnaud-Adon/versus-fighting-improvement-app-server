@@ -1,0 +1,23 @@
+version: 2.1
+orbs:
+  node: circleci/node@3.0.0
+workflows:
+  heroku_deploy:
+    jobs:
+      - node/test
+      - deploy:
+          requires:
+            - node/test
+          filters:
+            branches:
+              only: main
+
+version: 2.1
+jobs:
+  deploy:
+    steps:
+      - run:
+          name: Deploy main to Heroku
+          command:  |
+            git push https://git.heroku.com/versus-fighting-app.git main
+
